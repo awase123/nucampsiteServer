@@ -10,6 +10,26 @@ router.get("/", function (req, res, next) {
   res.send("respond with a resource");
 });
 
+const isAdmin = (req, res, next) => {
+  if (req.user && req.user.admin) {
+    return next();
+  } else {
+    const err = new Error("You are not authorized to access this resource!");
+    err.status = 403; // Forbidden status
+    return next(err);
+  }
+};
+
+router.get("/users", authenticate.verifyUser, isAdmin, (req, res, next) => {
+  User.find({})
+    .then((users) => {
+      res.statusCode = 200;
+      res.setHeader("Content-Type", "application/json");
+      res.json(users);
+    })
+    .catch((err) => next(err));
+});
+
 router.post("/signup", (req, res) => {
   User.register(
     new User({ username: req.body.username }),
