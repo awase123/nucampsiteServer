@@ -4,17 +4,19 @@ const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
   firstname: {
-      type: String,
-      default: ''
+    type: String,
+    default: "",
   },
   lastname: {
-      type: String,
-      default: ''
+    type: String,
+    default: "",
   },
   admin: {
-      type: Boolean,
-      default: false
-  }
+    type: Boolean,
+    default: false,
+  },
+
+  facebookId: String,
 });
 
 userSchema.plugin(passportLocalMongoose);
